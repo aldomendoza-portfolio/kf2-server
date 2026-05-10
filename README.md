@@ -16,6 +16,7 @@ El despliegue utiliza una configuración de doble interfaz para balancear la ges
 ## 🚀 Instalación Rápida
 
 1. Clonar y Preparar el Entorno
+
 Primero, prepara tu archivo de configuración sensible:
 
 ``` Bash
@@ -24,15 +25,17 @@ cd kf2-server
 cp .env.example .env
 ```
 2. Configurar Variables
+
 Edita el archivo .env con tus credenciales y preferencias. No compartas este archivo.
 
-'''
+```
 KF2_SERVER_NAME=Aldo-KF2-Server
 KF2_ADMIN_PASSWORD=TuPasswordSeguro
 KF2_MAP=KF-BioticsLab
 SERVER_IP=192.168.1.81  # IP de la VM en modo Bridge
 ```
 3. Ejecutar el Script
+
 Este script `setup_server.sh` se encarga de todo: 
 
 - Corregir el ruteo asimétrico del kernel de Linux.
