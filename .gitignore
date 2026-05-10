@@ -1,0 +1,10 @@
+# Secretos e información sensible
+.env
+
+# Datos del juego (si decides mapear bind mounts locales)
+serverdata/
+kf2_data/
+
+# Logs y temporales
+*.log
+.DS_Store

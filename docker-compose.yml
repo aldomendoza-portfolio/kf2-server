@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  kf2-server:
+    image: rouhim/killing-floor-2-server:latest
+    container_name: kf2-server
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    environment:
+      - KF2_SERVER_NAME=${KF2_SERVER_NAME}
+      - KF2_ADMIN_PASSWORD=${KF2_ADMIN_PASSWORD}
+      - KF2_WEB_ADMIN_ENABLED=true
+      - KF2_WEB_ADMIN_PORT=${PORT_WEB}
+      - KF2_MAP=${KF2_MAP}
+    ports:
+      - "${PORT_GAME}:${PORT_GAME}/udp"
+      - "${PORT_QUERY}:${PORT_QUERY}/udp"
+      - "20660:20660/udp"
+      - "${PORT_WEB}:${PORT_WEB}/tcp"
+    volumes:
+      - kf2_data:/data
+
+volumes:
+  kf2_data:
+    driver: local
