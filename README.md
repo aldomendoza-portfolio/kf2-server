@@ -19,7 +19,7 @@ El despliegue utiliza una configuración de doble interfaz para balancear la ges
 Primero, prepara tu archivo de configuración sensible:
 
 ``` Bash
-git clone <tu-repo-url>
+git clone https://github.com/aldomendoza-portfolio/kf2-server.git
 cd kf2-server
 cp .env.example .env
 ```
