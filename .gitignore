@@ -1,6 +1,5 @@
 # Secretos e información sensible
 .env
-check_achievements.sh
 
 # Datos del juego (si decides mapear bind mounts locales)
 serverdata/
