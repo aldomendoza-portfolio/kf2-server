@@ -10,11 +10,9 @@ else
 fi
 
 # 2. Validación de Password
-if [ -z "$KF2_ADMIN_PASSWORD" ]; then
-    read -sp "🔑 Introduce la contraseña de Administrador: " KF2_ADMIN_PASSWORD
-    echo ""
-    export KF2_ADMIN_PASSWORD
-fi
+# Si no existe la línea, inyectamos el bloque completo
+echo "🛠️ Asegurando AdminPassword..."
+docker exec kf2-server bash -c "grep -q 'AdminPassword' /data/KFGame/Config/LinuxServer-KFGame.ini || echo -e '\n[Engine.AccessControl]\nAdminPassword=${KF2_ADMIN_PASSWORD}' >> /data/KFGame/Config/LinuxServer-KFGame.ini"
 
 # 3. Detección dinámica de IP (Interfaz Bridge enp0s8)
 # Intentamos obtener la IP de enp0s8, si no, pedimos input.
@@ -57,6 +55,10 @@ if [ $? -eq 0 ]; then
 else
     echo "❌ Error: Los archivos de configuración no se generaron a tiempo."
 fi
+
+echo "🔐 Configurando contraseñas de acceso..."
+docker exec kf2-server sed -i "s/^GamePassword=.*/GamePassword=${KF2_GAME_PASSWORD}/g" /data/KFGame/Config/LinuxServer-KFGame.ini
+docker exec kf2-server sed -i "s/^AdminPassword=.*/AdminPassword=${KF2_ADMIN_PASSWORD}/g" /data/KFGame/Config/LinuxServer-KFGame.ini
 
 docker compose restart kf2-server
 
