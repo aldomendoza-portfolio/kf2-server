@@ -42,10 +42,21 @@ echo "🐳 Iniciando contenedores..."
 docker compose up -d
 
 # 6. Parche de configuración interna (INI)
-echo "🛠️ Aplicando parches a los archivos .ini..."
-docker exec -it kf2-server sed -i "s/bEnabled=false/bEnabled=true/g" /data/KFGame/Config/KFWeb.ini
-docker exec -it kf2-server sed -i "s/ListenPort=.*/ListenPort=${PORT_WEB}/g" /data/KFGame/Config/KFWeb.ini
-docker exec -it kf2-server sed -i "s/AdminPassword=.*/AdminPassword=${KF2_ADMIN_PASSWORD}/g" /data/KFGame/Config/LinuxServer-KFGame.ini
+echo "⏳ Esperando a que el servidor genere los archivos de configuración..."
+# Espera hasta que aparezca el archivo principal (máximo 60 segundos)
+timeout 60s bash -c "until docker exec kf2-server ls /data/KFGame/Config/LinuxServer-KFGame.ini >/dev/null 2>&1; do sleep 2; done"
+
+if [ $? -eq 0 ]; then
+    echo "🛠️ Archivos detectados. Aplicando parches..."
+    docker exec kf2-server sed -i "s/bEnabled=false/bEnabled=true/g" /data/KFGame/Config/KFWeb.ini
+    docker exec kf2-server sed -i "s/ListenPort=.*/ListenPort=${PORT_WEB}/g" /data/KFGame/Config/KFWeb.ini
+    docker exec kf2-server sed -i "s/^AdminPassword=.*/AdminPassword=${KF2_ADMIN_PASSWORD}/g" /data/KFGame/Config/LinuxServer-KFGame.ini
+    
+    docker compose restart kf2-server
+    echo "✅ WebAdmin configurado y reiniciado."
+else
+    echo "❌ Error: Los archivos de configuración no se generaron a tiempo."
+fi
 
 docker compose restart kf2-server
 
