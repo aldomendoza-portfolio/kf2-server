@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   kf2-server:
     image: rouhim/killing-floor-2-server:latest
