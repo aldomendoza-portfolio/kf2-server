@@ -45,7 +45,7 @@ docker compose up -d
 echo "🛠️ Aplicando parches a los archivos .ini..."
 docker exec -it kf2-server sed -i "s/bEnabled=false/bEnabled=true/g" /data/KFGame/Config/KFWeb.ini
 docker exec -it kf2-server sed -i "s/ListenPort=.*/ListenPort=${PORT_WEB}/g" /data/KFGame/Config/KFWeb.ini
-docker exec -it kf2-server sed -i "s/AdminPassword=.*/AdminPassword=${KF2_ADMIN_PASSWORD}/g" /data/KFGame/Config/*KFGame.ini
+docker exec -it kf2-server sed -i "s/AdminPassword=.*/AdminPassword=${KF2_ADMIN_PASSWORD}/g" /data/KFGame/Config/LinuxServer-KFGame.ini
 
 docker compose restart kf2-server
 
